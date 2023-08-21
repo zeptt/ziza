@@ -1,5 +1,0 @@
----
-"@ziza/next": patch
----
-
-init
