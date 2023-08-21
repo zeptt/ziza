@@ -2,4 +2,4 @@
 "@ziza/next": patch
 ---
 
-Inital Commit
+init
