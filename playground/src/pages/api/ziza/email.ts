@@ -57,6 +57,7 @@ export default createEmailApiHandler(
       from: "geoffreyantoignatius@gmail.com",
       password: "xxxxxxxxxxxxxxxxx",
     },
+
     // make this as adapters to import and use
     {
       host: "smtp.gmail.com",
