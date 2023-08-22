@@ -17,7 +17,6 @@ type EmailTemplate = {
 type TransporterOpts = {
   from: string;
   password: string;
-  host: string;
 };
 
 const createTransporter = (
@@ -26,9 +25,6 @@ const createTransporter = (
 ) => {
   return nodemailer.createTransport({
     ...args,
-    host: opts.host,
-    port: 587,
-    secure: false,
     auth: {
       user: opts.from,
       pass: opts.password,
@@ -36,7 +32,7 @@ const createTransporter = (
   });
 };
 
-const templates = [{ coupon: {} }];
+const templates = [] satisfies Array<Record<string, SMTPTransport.MailOptions>>;
 
 const createEmailApiHandler = <
   TOpts extends Record<string, any>[],
@@ -49,16 +45,24 @@ const createEmailApiHandler = <
   // we have the template name, and the data we can get from the types
   // using the transport we can send the email with the data
   // think abt attachments more
-  return (req, res) => {
+  return async (req, res) => {
     res.status(200).json({ message: "Email sent!" });
   };
 };
 
 export default createEmailApiHandler(
   templates,
-  createTransporter({
-    from: "geoffrey@gmail.com",
-    password: "password",
-    host: "smtp.gmail.com",
-  })
+  createTransporter(
+    {
+      from: "geoffreyantoignatius@gmail.com",
+      password: "xxxxxxxxxxxxxxxxx",
+    },
+    // make this as adapters to import and use
+    {
+      host: "smtp.gmail.com",
+      service: "gmail",
+      port: 465,
+      secure: true,
+    }
+  )
 );
