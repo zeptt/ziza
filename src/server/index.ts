@@ -1,3 +1,1 @@
-import { POST } from "./email";
-
-export { POST };
+export * from "./email";
