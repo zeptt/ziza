@@ -112,7 +112,6 @@ interface MailOptions {
   normalizeHeaderKey?(key: string): string;
   priority?: "high" | "normal" | "low" | undefined;
   attachDataUrls?: boolean | undefined;
-  data: Record<string, unknown>;
 }
 
 // --------------------------------------------- ZOD SCHEMAS ---------------------------------------------
@@ -306,7 +305,7 @@ const MailOptionsSchema = z.object({
     .union([z.literal("high"), z.literal("normal"), z.literal("low")])
     .optional(),
   attachDataUrls: z.boolean().optional(),
-  data: z.record(z.unknown()),
+  data: z.record(z.any()),
 });
 
 export { MailOptionsSchema };

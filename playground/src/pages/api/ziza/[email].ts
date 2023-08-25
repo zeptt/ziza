@@ -2,15 +2,22 @@ import {
   createEmailApiHandler,
   createTransporter,
   gmailSmtpTransporterAdapter,
-  t,
 } from "@/utils/email";
 
 export default createEmailApiHandler(
-  { bills: { data: {} } },
+  {
+    bills: {
+      data: {
+        name: "",
+        email: "",
+      },
+    },
+    coupon: { data: {} },
+  },
   createTransporter({
     auth: {
       from: "geoffreyantoignatius@gmail.com",
-      password: process.env.GMAIL_PASSWORD || "password",
+      password: "eznxsixrjcqdslyn",
     },
     smtpTransporter: gmailSmtpTransporterAdapter,
   })
