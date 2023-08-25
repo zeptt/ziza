@@ -1,18 +1,25 @@
 import {
   createEmailApiHandler,
   createTransporter,
+  getHtmlTemplate,
   gmailSmtpTransporterAdapter,
 } from "@/utils/email";
+import path from "path";
 
 export default createEmailApiHandler(
   {
-    bills: {
+    welcome: {
       data: {
         name: "",
-        email: "",
+        age: 0,
+        address: "",
       },
+      html: getHtmlTemplate(
+        path.join(process.cwd(), "src", "template", "bills.html")
+      ),
+      to: "geoffreyanto12@gmail.com",
+      subject: "Welcome to Ziza",
     },
-    coupon: { data: {} },
   },
   createTransporter({
     auth: {

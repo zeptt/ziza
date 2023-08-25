@@ -4,6 +4,7 @@ import SMTPTransport from "nodemailer/lib/smtp-transport";
 import { template } from "./template";
 import * as z from "zod";
 import { MailOptions, MailOptionsSchema } from "./EmailInputType";
+import { readFileSync } from "fs";
 
 const templateSchema = z.object({
   html: z.string(),
@@ -45,6 +46,12 @@ export const createTransporter = (opts: {
     },
   });
 };
+
+export function getHtmlTemplate(path: string) {
+  const line = readFileSync(path, "utf-8");
+  console.log(line);
+  return line;
+}
 
 function createEmailTemplate(
   templates: Record<string, z.infer<typeof MailOptionsSchema>>
@@ -114,7 +121,7 @@ export const createEmailApiHandler = <
 
     const { data: bodyData, ...restMailOpts } = data;
 
-    const { data: templateDataFormat } = template;
+    const { data: templateDataFormat, ...restTemplateOpts } = template;
 
     for (const key in templateDataFormat) {
       if (!bodyData[key]) {
@@ -124,8 +131,8 @@ export const createEmailApiHandler = <
       }
     }
     let html = undefined;
-    if (typeof restMailOpts.html === "string") {
-      html = parseTemplateHTMLWithData(restMailOpts.html, bodyData);
+    if (typeof restTemplateOpts.html === "string") {
+      html = parseTemplateHTMLWithData(restTemplateOpts.html, bodyData);
       restMailOpts.html = html;
       console.log(html);
     }
