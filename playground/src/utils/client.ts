@@ -1,21 +1,21 @@
 import { z } from "zod";
-
-//! TODO: Change this to the final email client options once we finalize
-const emailOptionsSchema = z.object({
-  from: z.string(),
-  to: z.string(),
-  subject: z.string(),
-});
+import { emailOptionsSchema } from "./template";
 
 const createEmailClient = <
-  T extends Record<string, { data: Record<string, z.Schema>; html: string }>
+  T extends Record<
+    string,
+    { data: Record<string, z.Schema>; html: string } & {
+      defaults?: z.infer<typeof emailOptionsSchema>;
+    }
+  >
 >(
   template: T
 ) => {
   const templateSchema = z.record(
     z.object({
-      data: z.record(z.any()),
+      data: z.record(z.object({})),
       html: z.string(),
+      defaults: emailOptionsSchema.optional(),
     })
   );
   const isValidTemplate = templateSchema.safeParse(template);
@@ -25,7 +25,9 @@ const createEmailClient = <
   return {
     sendEmail: async <K extends keyof T>(
       templateName: K,
-      data: { [DKey in keyof T[K]["data"]]: z.infer<T[K]["data"][DKey]> },
+      dataFromClient: {
+        [DKey in keyof T[K]["data"]]: z.infer<T[K]["data"][DKey]>;
+      },
       options: z.infer<typeof emailOptionsSchema>
     ) => {
       // check the template exists
@@ -36,7 +38,7 @@ const createEmailClient = <
       }
 
       const keysInTemplateData = Object.keys(template[templateName].data);
-      const keysInDataFromUser = Object.keys(data);
+      const keysInDataFromUser = Object.keys(dataFromClient);
 
       // check if the no of keys in template data and data from user are same
       if (keysInTemplateData.length !== keysInDataFromUser.length) {
@@ -62,7 +64,10 @@ const createEmailClient = <
 
         // parse the data with the schema in template's data object
         keysInTemplateData.forEach((key) => {
-          if (!template[templateName].data[key].safeParse(data[key]).success) {
+          if (
+            !template[templateName].data[key].safeParse(dataFromClient[key])
+              .success
+          ) {
             throw new Error(
               "Invalid data! The Passed data does not match the schema in template."
             );
@@ -78,21 +83,14 @@ const createEmailClient = <
 
       //! This is commented out for now, make sure we implement this later in the server
       //! Then Change the payload to the commented one below
-      // const payload = {
-      //   data: data,
-      //   emailOptions: emailOptionsToBeSent.data,
-      // };
-
-      //! This is the payload that should be sent to the server for now
-      //! Once we implement the commented payload above, we can remove this
       const payload = {
-        data: {
-          data,
+        data: dataFromClient,
+        emailOptions: {
+          ...template[templateName].defaults,
           ...emailOptionsToBeSent.data,
         },
+        html: template[templateName].html,
       };
-
-      console.log(payload);
 
       try {
         const res = await fetch(`/api/ziza/${String(templateName)}`, {
