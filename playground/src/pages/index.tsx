@@ -1,6 +1,6 @@
+import { createEmailClient } from "../../../src";
 import { Inter } from "next/font/google";
-import { createEmailClient } from "@/utils/client";
-import { template } from "@/utils/template";
+import { template } from "./api/ziza/[ziza]";
 
 const inter = Inter({ subsets: ["latin"] });
 

@@ -1,21 +1,9 @@
 import type { NextApiHandler } from "next";
 import nodemailer from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
-import { emailOptionsSchema } from "./template";
+import { ApiBodySchema, TransporterOpts, EmailOptionsSchema } from "./types";
 import * as z from "zod";
 import { readFileSync } from "fs";
-
-export const gmailSmtpTransporterAdapter = {
-  host: "smtp.gmail.com",
-  service: "gmail",
-  port: 465,
-  secure: true,
-};
-
-type TransporterOpts = {
-  from: string;
-  password: string;
-};
 
 export const createTransporter = (opts: {
   auth: TransporterOpts;
@@ -50,17 +38,11 @@ const populateTemplateHTMLWithData = <T extends Record<string, any>>(
   });
 };
 
-const bodySchema = z.object({
-  data: z.record(z.any()),
-  emailOptions: emailOptionsSchema,
-  html: z.string(),
-});
-
 export const createEmailApiHandler = <
   T extends Record<
     string,
     { data: Record<string, z.Schema>; html: string } & {
-      defaults?: z.infer<typeof emailOptionsSchema>;
+      defaults?: z.infer<typeof EmailOptionsSchema>;
     }
   >,
   TMailTransporter extends nodemailer.Transporter<SMTPTransport.SentMessageInfo>
@@ -73,7 +55,7 @@ export const createEmailApiHandler = <
       return res.status(404).json({ message: "Invalid Method!" });
     }
 
-    const dataFromApi = bodySchema.safeParse(req.body);
+    const dataFromApi = ApiBodySchema.safeParse(req.body);
 
     if (!dataFromApi.success) {
       return res.status(400).json({
@@ -96,7 +78,7 @@ export const createEmailApiHandler = <
       return res.status(400).json({ message: "Invalid Template Name!" });
     }
 
-    if (!emailOptionsSchema.safeParse(dataFromApi.data.emailOptions).success) {
+    if (!EmailOptionsSchema.safeParse(dataFromApi.data.emailOptions).success) {
       return res.status(400).json({ message: "Messed up the email options!" });
     }
 

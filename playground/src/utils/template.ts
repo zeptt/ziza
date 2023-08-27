@@ -47,8 +47,8 @@ export const template = createTemplate({
     },
     html: `
       <div>
-        <h1>Welcome {{name}} {{email}}!</h1>
-        <p>Thank you for registering with us.</p>
+      <h1>Welcome {{name}} {{email}}!</h1>
+      <p>Thank you for registering with us.</p>
       </div>
     `,
   },
