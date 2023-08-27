@@ -1,5 +1,11 @@
 # @ziza/next
 
+## 0.0.4
+
+### Patch Changes
+
+- 4686c88: added add methods
+
 ## 0.0.3
 
 ### Patch Changes
