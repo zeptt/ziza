@@ -1,5 +1,11 @@
 # @ziza/next
 
+## 0.0.6
+
+### Patch Changes
+
+- ed97a00: removed fs
+
 ## 0.0.5
 
 ### Patch Changes
