@@ -3,7 +3,6 @@ import nodemailer from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 import { ApiBodySchema, TransporterOpts, EmailOptionsSchema } from "./types";
 import * as z from "zod";
-import { readFileSync } from "fs";
 
 export const createTransporter = (opts: {
   auth: TransporterOpts;
@@ -17,12 +16,6 @@ export const createTransporter = (opts: {
     },
   });
 };
-
-export function getHtmlTemplate(path: string) {
-  const line = readFileSync(path, "utf-8");
-  console.log(line);
-  return line;
-}
 
 const populateTemplateHTMLWithData = <T extends Record<string, any>>(
   template: string,
