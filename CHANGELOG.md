@@ -1,5 +1,11 @@
 # @ziza/next
 
+## 0.0.5
+
+### Patch Changes
+
+- 7570b68: new build
+
 ## 0.0.4
 
 ### Patch Changes
