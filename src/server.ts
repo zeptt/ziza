@@ -17,6 +17,7 @@ export const createTransporter = (opts: {
   });
 };
 
+// Fill the {{}} with the data
 const populateTemplateHTMLWithData = <T extends Record<string, any>>(
   template: string,
   data: T
