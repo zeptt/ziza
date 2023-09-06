@@ -27,7 +27,6 @@ const populateTemplateHTMLWithData = <T extends Record<string, any>>(
   const regex = new RegExp(`{{(${keys.join("|")})}}`, "g");
   return template.replace(regex, (_, key) => {
     const index = keys.indexOf(key);
-    console.log(index);
     return values[index];
   });
 };
@@ -56,10 +55,6 @@ export const createEmailApiHandler = <
         message: "Invalid Data! Please Check the format of json payload!",
       });
     }
-
-    // We have preformed the dataObj validation in client side
-    // So we can safely assume that the dataObj is valid
-    //! Future: Check Again or move the validation to server side
 
     // get the template name from the dynamic route
     const { ziza: templateName } = req.query;

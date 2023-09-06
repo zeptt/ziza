@@ -1,6 +1,81 @@
 import { EmailOptionsSchema, templateSchema } from "./types";
 import { z } from "zod";
 
+const isTemplateNameValid = <T extends Record<string, any>>(
+  template: T,
+  templateName: string
+) => {
+  if (
+    Object.keys(template).includes(templateName) &&
+    template[templateName] !== undefined &&
+    template[templateName] !== null
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+const isTheDataOfSameLength = (
+  keysInTemplateData: string[],
+  keysInDataFromUser: string[]
+) => {
+  if (keysInTemplateData.length !== keysInDataFromUser.length) {
+    return false;
+  } else {
+    return true;
+  }
+};
+
+const isTheDataOfSameKeys = (
+  keysInTemplateData: string[],
+  keysInDataFromUser: string[]
+) => {
+  keysInTemplateData.forEach((key) => {
+    if (!keysInDataFromUser.includes(key)) {
+      return false;
+    }
+  });
+
+  // Check if there is any key that exists in data from user but not in template
+  keysInDataFromUser.forEach((key) => {
+    if (!keysInTemplateData.includes(key)) {
+      return false;
+    }
+  });
+
+  return true;
+};
+
+const isDataFromClientValid = <T extends Record<string, any>>(
+  template: T,
+  templateName: string,
+  dataFromClient: Record<string, any>
+) => {
+  const keysInTemplateData = Object.keys(template[templateName]!.data);
+  const keysInDataFromUser = Object.keys(dataFromClient);
+
+  // check if the no of keys in template data and data from user are same
+  if (!isTheDataOfSameLength(keysInTemplateData, keysInDataFromUser)) {
+    return false;
+  } else {
+    // Check if there is any key that exists in template but not in data from user
+    if (!isTheDataOfSameKeys(keysInTemplateData, keysInDataFromUser))
+      return false;
+
+    // parse the data with the schema in template's data object
+    keysInTemplateData.forEach((key) => {
+      if (
+        !template[templateName]!.data[key]!.safeParse(dataFromClient[key])
+          .success
+      ) {
+        return false;
+      }
+    });
+    return true;
+  }
+};
+
 const createEmailClient = <
   T extends Record<
     string,
@@ -23,49 +98,18 @@ const createEmailClient = <
       },
       options: z.infer<typeof EmailOptionsSchema>
     ) => {
-      // check the template exists
-      if (!template[templateName]) {
+      if (!isTemplateNameValid(template, templateName as string)) {
         throw new Error(
           "Invalid template! Template does not exist, Please check the template name."
         );
       }
 
-      const keysInTemplateData = Object.keys(template[templateName]!.data);
-      const keysInDataFromUser = Object.keys(dataFromClient);
-
-      // check if the no of keys in template data and data from user are same
-      if (keysInTemplateData.length !== keysInDataFromUser.length) {
-        throw new Error("Invalid data! The Passed data does not match schema.");
-      } else {
-        // Check if there is any key that exists in template but not in data from user
-        keysInTemplateData.forEach((key) => {
-          if (!keysInDataFromUser.includes(key)) {
-            throw new Error(
-              "Invalid data! Found Key that does not exist in template."
-            );
-          }
-        });
-
-        // Check if there is any key that exists in data from user but not in template
-        keysInDataFromUser.forEach((key) => {
-          if (!keysInTemplateData.includes(key)) {
-            throw new Error(
-              "Invalid data! Found Key that does not exist in template."
-            );
-          }
-        });
-
-        // parse the data with the schema in template's data object
-        keysInTemplateData.forEach((key) => {
-          if (
-            !template[templateName]!.data[key]!.safeParse(dataFromClient[key])
-              .success
-          ) {
-            throw new Error(
-              "Invalid data! The Passed data does not match the schema in template."
-            );
-          }
-        });
+      if (
+        !isDataFromClientValid(template, templateName as string, dataFromClient)
+      ) {
+        throw new Error(
+          "Invalid data! The Passed data does not match the schema in template. Please check the data."
+        );
       }
 
       // Check if the email options are valid
@@ -74,8 +118,6 @@ const createEmailClient = <
         throw new Error("Invalid email options");
       }
 
-      //! This is commented out for now, make sure we implement this later in the server
-      //! Then Change the payload to the commented one below
       const payload = {
         data: dataFromClient,
         emailOptions: {
@@ -109,4 +151,10 @@ const createEmailClient = <
   };
 };
 
-export { createEmailClient };
+export {
+  createEmailClient,
+  isTemplateNameValid,
+  isDataFromClientValid,
+  isTheDataOfSameKeys,
+  isTheDataOfSameLength,
+};
