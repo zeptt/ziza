@@ -1,4 +1,4 @@
-import { EmailOptionsSchema } from "types";
+import { EmailOptionsSchema, templateSchema } from "./types";
 import { z } from "zod";
 
 const createEmailClient = <
@@ -11,13 +11,6 @@ const createEmailClient = <
 >(
   template: T
 ) => {
-  const templateSchema = z.record(
-    z.object({
-      data: z.record(z.object({})),
-      html: z.string(),
-      defaults: EmailOptionsSchema.optional(),
-    })
-  );
   const isValidTemplate = templateSchema.safeParse(template);
   if (!isValidTemplate.success) {
     throw new Error("Invalid template");

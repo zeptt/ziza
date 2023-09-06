@@ -22,3 +22,11 @@ export const ApiBodySchema = z.object({
   emailOptions: EmailOptionsSchema,
   html: z.string(),
 });
+
+export const templateSchema = z.record(
+  z.object({
+    data: z.record(z.object({})),
+    html: z.string(),
+    defaults: EmailOptionsSchema.optional(),
+  })
+);

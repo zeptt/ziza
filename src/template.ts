@@ -1,4 +1,4 @@
-import { EmailOptionsSchema } from "types";
+import { EmailOptionsSchema, templateSchema } from "./types";
 import { z } from "zod";
 
 export const createTemplate = <
@@ -11,5 +11,9 @@ export const createTemplate = <
 >(
   template: T
 ) => {
+  const isValidTemplate = templateSchema.safeParse(template);
+  if (!isValidTemplate.success) {
+    throw new Error("Invalid template");
+  }
   return template;
 };
