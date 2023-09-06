@@ -4,7 +4,7 @@ import { z } from "zod";
 const createEmailClient = <
   T extends Record<
     string,
-    { data: Record<string, z.Schema>; html: string } & {
+    { data: Record<string, z.ZodNumber | z.ZodString>; html: string } & {
       defaults?: z.infer<typeof EmailOptionsSchema>;
     }
   >

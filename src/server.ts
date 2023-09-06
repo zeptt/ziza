@@ -35,7 +35,7 @@ const populateTemplateHTMLWithData = <T extends Record<string, any>>(
 export const createEmailApiHandler = <
   T extends Record<
     string,
-    { data: Record<string, z.Schema>; html: string } & {
+    { data: Record<string, z.ZodNumber | z.ZodString>; html: string } & {
       defaults?: z.infer<typeof EmailOptionsSchema>;
     }
   >,
