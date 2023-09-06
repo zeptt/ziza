@@ -1,5 +1,11 @@
 # @ziza/next
 
+## 0.0.8
+
+### Patch Changes
+
+- 35e3e45: fixed zod
+
 ## 0.0.7
 
 ### Patch Changes
