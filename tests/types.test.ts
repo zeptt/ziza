@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ApiBodySchema, EmailOptionsSchema } from "../src/types";
+import { ApiBodySchema, EmailOptionsSchema } from "../internal/types";
 
 describe("ApiBodySchema", () => {
   const mockData = [

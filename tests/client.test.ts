@@ -4,7 +4,7 @@ import {
   isTemplateNameValid,
   isTheDataOfSameKeys,
   isTheDataOfSameLength,
-} from "../src/client";
+} from "../internal/client";
 import { z } from "zod";
 
 describe("client", () => {

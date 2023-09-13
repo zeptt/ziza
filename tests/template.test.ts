@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createTemplate } from "../src/template";
+import { createTemplate } from "../internal/template";
 import { describe, expect, it } from "vitest";
 
 describe("template", () => {
