@@ -10,5 +10,5 @@
     "noEmit": true,
     "baseUrl": "./src/",
   },
-  "exclude": ["node_modules", "dist", "playground"]
+  "exclude": ["node_modules", "dist", "playground", "ziza-examples"]
 }
