@@ -134,9 +134,6 @@ const createEmailClient = <
           headers: {
             "Content-Type": "application/json",
           },
-
-          //! TODO: Change this to "same-origin" once we deploy or if needed
-          mode: "same-origin",
         });
 
         const dataFromServer = await res.json();

@@ -35,12 +35,13 @@ export default function Attachment() {
     >
       <input type="file" onChange={handleFileUpload} />
       <button
-        onClick={() => {
-          emailClient.sendEmail(
+        onClick={async () => {
+          const res = await emailClient.sendEmail(
             "bills",
             { price: 100, noOfItems: 1234128 },
             {
-              to: "kushagra.garg77@gmail.com",
+              to: "youremailaddress@gmail.com",
+              cc: "youremailaddress@vitstudent.ac.in",
               attachments: [
                 {
                   filename: fileName,
@@ -50,6 +51,7 @@ export default function Attachment() {
               ],
             }
           );
+          console.log(res);
         }}
       >
         Send Email
