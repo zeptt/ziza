@@ -1,7 +1,7 @@
 src/
 node_modules/
 playground/
-test/
+tests/
 .github/
 .changset/
 ziza-examples/
