@@ -1,5 +1,11 @@
 # @ziza/next
 
+## 0.1.0
+
+### Minor Changes
+
+- 8fdc748: added all features
+
 ## 0.0.8
 
 ### Patch Changes
