@@ -1,5 +1,11 @@
 # @ziza/next
 
+## 0.1.1
+
+### Patch Changes
+
+- 555c50e: Update ReadMe
+
 ## 0.1.0
 
 ### Minor Changes
