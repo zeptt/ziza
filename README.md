@@ -15,9 +15,9 @@ Ziza is an open-source Next.js-based email service for the client. It's fully ty
 To get started with Ziza, you need to install it using npm or yarn:
 
 ```bash
-npm install @geoffrey-anto/ziza
+npm install ziza
 # or
-yarn add @geoffrey-anto/ziza
+yarn add ziza
 ```
 
 ## Usage
@@ -164,7 +164,7 @@ yarn test
 
 ## 🤝 Contributing
 
-We welcome contributions! Feel free to open issues or submit pull requests on the [GitHub repository](https://github.com/yourusername/ziza).
+We welcome contributions! Feel free to open issues or submit pull requests on the [GitHub repository](https://github.com/zeptt/ziza).
 
 ## 📃 License
 
