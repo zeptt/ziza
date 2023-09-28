@@ -1,5 +1,11 @@
 # @ziza/next
 
+## 0.1.2
+
+### Patch Changes
+
+- f01684e: push to npm
+
 ## 0.1.1
 
 ### Patch Changes
