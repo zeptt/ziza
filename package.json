@@ -1,5 +1,5 @@
 {
-  "name": "ziza-email",
+  "name": "@zeptt/ziza",
   "license": "MIT",
   "version": "0.1.2",
   "main": "dist/index.js",
