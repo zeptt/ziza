@@ -132,7 +132,7 @@ Here are some example snippets for using Ziza:
     { price: 100, noOfItems: 1234128 },
     {
       to: "youremailaddress@gmail.com",
-      cc: "youremailaddress@vitstudent.ac.in",
+      cc: "youremailaddress@yahoo.com",
       attachments: [
         {
           filename: fileName,
