@@ -1,5 +1,5 @@
 {
-  "name": "@zeptt/ziza",
+  "name": "ziza",
   "license": "MIT",
   "version": "0.1.3",
   "main": "dist/index.js",
