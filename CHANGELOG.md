@@ -1,5 +1,11 @@
 # @ziza/next
 
+## 0.1.5
+
+### Patch Changes
+
+- d4910f5: Changed Readme
+
 ## 0.1.4
 
 ### Patch Changes
