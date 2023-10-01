@@ -12,7 +12,7 @@ Ziza is an open-source Next.js-based email service for the client. It's fully ty
 
 ## Installation
 
-To get started with Ziza, you need to install it using npm, yarn or pnpm:
+To get started with Ziza, you need to install it using npm, yarn, or pnpm:
 
 ```bash
 npm install ziza
@@ -21,6 +21,12 @@ yarn add ziza
 # or
 pnpm i ziza
 ```
+<br/>
+
+### ⚠️ **Please Note:** Ziza currently only works with the Pages Directory in your Next.js app. Next.js App Directory will be available soon.
+
+<br/>
+
 
 ## Usage
 
@@ -63,9 +69,11 @@ export const template = createTemplate({
 });
 ```
 
-### 2. Configure Email Transporter
+### 2. Configure Email Transporter Endpoint
 
 Configure the email transporter, specifying the SMTP transport adapter. For example, using Gmail's SMTP:
+
+⚠️ *Please Note:* This needs to be pasted in a special directory under ```/api/ziza/[ziza].ts``` in the API routes folder under pages directory.
 
 ```typescript
 import { gmailSmtpTransporterAdapter } from "ziza/adapters";
@@ -89,66 +97,26 @@ export default createEmailApiHandler(
 Now you can use Ziza to send emails easily:
 
 ```javascript
-import { createEmailClient } from "ziza";
-
+import { createEmailClient } from "ziza/client";
+  
 const emailClient = createEmailClient(template);
-```
 
-## Example Snippets
-
-Here are some example snippets for using Ziza:
-
-- **Creating an Email Template:**
-
-  ```typescript
-  import { createTemplate } from "ziza/template";
-  import { z } from "zod";
-
-  export const template = createTemplate({
-    // Your template definitions here
-  });
-  ```
-
-- **Configuring the Email Transporter:**
-
-  ```typescript
-  import { gmailSmtpTransporterAdapter } from "ziza/adapters";
-  import { createEmailApiHandler, createTransporter } from "ziza/server";
-  import { template } from "path/to/your/template/file";
-
-  export default createEmailApiHandler(
-    template,
-    createTransporter({
-      auth: {
-        from: "youremailaddress@gmail.com",
-        password: process.env.GMAIL_PASSWORD as string,
+const res = await emailClient.sendEmail(
+  "template_name",
+  { templateArgs: true },
+  {
+    to: "youremailaddress@gmail.com",
+    cc: "youremailaddress@yahoo.com",
+    attachments: [
+      {
+        filename: yourFileName,
+        encoding: "base64",
+        content: fileData,
       },
-      smtpTransporter: gmailSmtpTransporterAdapter,
-    })
-  );
-  ```
-
-- **Sending an Email:**
-
-  ```typescript
-  const emailClient = createEmailClient(template);
-
-  const res = await emailClient.sendEmail(
-    "template_name",
-    { templateArgs: true },
-    {
-      to: "youremailaddress@gmail.com",
-      cc: "youremailaddress@yahoo.com",
-      attachments: [
-        {
-          filename: yourFIleName,
-          encoding: "base64",
-          content: fileData,
-        },
-      ],
-    }
-  );
-  ```
+    ],
+  }
+);
+```
 
 ## 🚀 Get Started
 
