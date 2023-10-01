@@ -5,19 +5,21 @@ Ziza is an open-source Next.js-based email service for the client. It's fully ty
 ## Features
 
 ✉️ Fully type-safe email templates with automatic data prompts.  
-📨 Backend configured with Node Mailer.  
+📨 Backend configured with Nodemailer.  
 📄 HTML-based email templates.  
 🔒 Secure SMTP transport options.  
 📦 Attachments support.  
 
 ## Installation
 
-To get started with Ziza, you need to install it using npm or yarn:
+To get started with Ziza, you need to install it using npm, yarn or pnpm:
 
 ```bash
 npm install ziza
 # or
 yarn add ziza
+# or
+pnpm i ziza
 ```
 
 ## Usage
@@ -65,10 +67,10 @@ export const template = createTemplate({
 
 Configure the email transporter, specifying the SMTP transport adapter. For example, using Gmail's SMTP:
 
-```javascript
+```typescript
 import { gmailSmtpTransporterAdapter } from "ziza/adapters";
 import { createEmailApiHandler, createTransporter } from "ziza/server";
-import { template } from "@/template/template";
+import { template } from "path/to/your/template/file";
 
 export default createEmailApiHandler(
   template,
@@ -98,7 +100,10 @@ Here are some example snippets for using Ziza:
 
 - **Creating an Email Template:**
 
-  ```javascript
+  ```typescript
+  import { createTemplate } from "ziza/template";
+  import { z } from "zod";
+
   export const template = createTemplate({
     // Your template definitions here
   });
@@ -106,9 +111,10 @@ Here are some example snippets for using Ziza:
 
 - **Configuring the Email Transporter:**
 
-  ```javascript
+  ```typescript
   import { gmailSmtpTransporterAdapter } from "ziza/adapters";
   import { createEmailApiHandler, createTransporter } from "ziza/server";
+  import { template } from "path/to/your/template/file";
 
   export default createEmailApiHandler(
     template,
@@ -124,20 +130,20 @@ Here are some example snippets for using Ziza:
 
 - **Sending an Email:**
 
-  ```javascript
+  ```typescript
   const emailClient = createEmailClient(template);
 
   const res = await emailClient.sendEmail(
-    "bills",
-    { price: 100, noOfItems: 1234128 },
+    "template_name",
+    { templateArgs: true },
     {
       to: "youremailaddress@gmail.com",
       cc: "youremailaddress@yahoo.com",
       attachments: [
         {
-          filename: fileName,
+          filename: yourFIleName,
           encoding: "base64",
-          content: base64Data,
+          content: fileData,
         },
       ],
     }
@@ -160,6 +166,8 @@ Ziza comes with a comprehensive test suite. You can run tests using:
 npm test
 # or
 yarn test
+# or
+pnpm test
 ```
 
 ## 🤝 Contributing
