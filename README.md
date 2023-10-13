@@ -124,7 +124,7 @@ To start using Ziza in your Next.js project, follow the installation and usage i
 
 ## 📖 Documentation
 
-For more details on Ziza's features and usage, please refer to the [official documentation](https://ziza-docs.example.com).
+For more details on Ziza's features and usage, please refer to this [README.md](https://github.com/Geoffrey-Anto/ziza/blob/main/README.md#usage).
 
 ## 🧪 Testing
 
