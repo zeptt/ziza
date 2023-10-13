@@ -73,7 +73,7 @@ export const template = createTemplate({
 
 Configure the email transporter, specifying the SMTP transport adapter. For example, using Gmail's SMTP:
 
-⚠️ *Please Note:* This needs to be pasted in a special directory under ```/api/ziza/[ziza].ts``` in the API routes folder under pages directory.
+⚠️ *Please Note:* This needs to be pasted in a special directory under ```pages/api/ziza/[ziza].ts``` in the API routes folder under pages directory.
 
 ```typescript
 import { gmailSmtpTransporterAdapter } from "ziza/adapters";
@@ -102,8 +102,8 @@ import { createEmailClient } from "ziza/client";
 const emailClient = createEmailClient(template);
 
 const res = await emailClient.sendEmail(
-  "template_name",
-  { templateArgs: true },
+  "foo",
+  { bar: true },
   {
     to: "youremailaddress@gmail.com",
     cc: "youremailaddress@yahoo.com",
