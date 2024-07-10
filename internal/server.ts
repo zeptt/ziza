@@ -1,4 +1,4 @@
-import type { NextApiHandler } from "next";
+import { NextResponse, type NextRequest } from "next/server";
 import nodemailer from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 import { ApiBodySchema, TransporterOpts, EmailOptionsSchema } from "./types";
@@ -42,33 +42,58 @@ export const createEmailApiHandler = <
 >(
   templates: T,
   transporter: TMailTransporter
-): NextApiHandler => {
-  return async (req, res) => {
+): any => {
+  return async (req: NextRequest) => {
     if (req.method !== "POST") {
-      return res.status(404).json({ message: "Invalid Method!" });
+      return NextResponse.json(
+        { message: "Invalid Method!" },
+        {
+          status: 404,
+        }
+      );
     }
 
     const dataFromApi = ApiBodySchema.safeParse(req.body);
 
     if (!dataFromApi.success) {
-      return res.status(400).json({
-        message: "Invalid Data! Please Check the format of json payload!",
-      });
+      return NextResponse.json(
+        {
+          message: "Invalid Data! Please Check the format of json payload!",
+        },
+        {
+          status: 400,
+        }
+      );
     }
 
     // get the template name from the dynamic route
-    const { ziza: templateName } = req.query;
+    const templateName = req.nextUrl.searchParams.get("ziza");
 
     if (typeof templateName !== "string") {
-      return res.status(400).json({ message: "Invalid Template Name!" });
+      return NextResponse.json(
+        { message: "Invalid Template Name!" },
+        {
+          status: 400,
+        }
+      );
     }
 
     if (!templates[templateName]) {
-      return res.status(400).json({ message: "Invalid Template Name!" });
+      return NextResponse.json(
+        { message: "Invalid Template Name!" },
+        {
+          status: 400,
+        }
+      );
     }
 
     if (!EmailOptionsSchema.safeParse(dataFromApi.data.emailOptions).success) {
-      return res.status(400).json({ message: "Messed up the email options!" });
+      return NextResponse.json(
+        { message: "Messed up the email options!" },
+        {
+          status: 400,
+        }
+      );
     }
 
     const htmlPopulatedWithData = populateTemplateHTMLWithData(
@@ -84,16 +109,36 @@ export const createEmailApiHandler = <
     try {
       const emailRes = await transporter.sendMail(emailPayload);
       if (emailRes.accepted.length === 0) {
-        return res.status(500).json({ message: "Email Not Sent!" });
+        return NextResponse.json(
+          { message: "Email Not Sent!" },
+          {
+            status: 500,
+          }
+        );
       } else if (emailRes.rejected.length === 0) {
-        return res.status(200).json({ message: "Email Sent!" });
+        return NextResponse.json(
+          { message: "Email Sent!" },
+          {
+            status: 500,
+          }
+        );
       } else {
-        return res
-          .status(500)
-          .json({ message: "Email Not Sent, Something Went Wrong!" });
+        return NextResponse.json(
+          {
+            message: "Email Not Sent, Something Went Wrong!",
+          },
+          {
+            status: 500,
+          }
+        );
       }
     } catch (error: any) {
-      return res.status(500).json({ message: error.message });
+      return NextResponse.json(
+        { message: error.message },
+        {
+          status: 500,
+        }
+      );
     }
   };
 };
