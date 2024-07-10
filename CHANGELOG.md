@@ -1,5 +1,11 @@
 # @ziza/next
 
+## 0.1.7
+
+### Patch Changes
+
+- 5cdf1e1: fixed api body
+
 ## 0.1.6
 
 ### Patch Changes
