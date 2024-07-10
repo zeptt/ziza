@@ -53,7 +53,7 @@ export const createEmailApiHandler = <
       );
     }
 
-    const dataFromApi = ApiBodySchema.safeParse(req.body);
+    const dataFromApi = ApiBodySchema.safeParse(await req.json());
 
     if (!dataFromApi.success) {
       return NextResponse.json(
