@@ -1,5 +1,11 @@
 # @ziza/next
 
+## 0.1.6
+
+### Patch Changes
+
+- 444de88: app router feature testing
+
 ## 0.1.5
 
 ### Patch Changes
